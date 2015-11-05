@@ -1,0 +1,41 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+\section{Laplace's method}
+\label{sec:laplace}
+Laplace's mothod (smoothing) とは，ある分布$q(\bm{\theta})$をGaussianで近似する手法である．
+ここでは，Laplace's mothodによる分布の積分の近似を示す．\cite{konishi_kitagawa200409}
+
+パラメータ$\bm{\theta}$の分布に関する積分を考える（$n$は標本数）
+\begin{equation}
+  \label{eq:1}
+  \int \exp(n q(\bm{\theta}))d \bm{\theta}
+\end{equation}
+を考える．$\bm{\theta}$のmodeを$\bm{\hat{\theta}}$とし，その近傍でテイラー展開する．（$n$が十分に大きければ$\bm{\theta}$はmodeに集中すると仮定して近似している）．
+$\left.\frac{\partial q(\bm{\theta})}{\partial \bm{\theta}}\right|_{\bm{\hat{\theta}}}=0$であるので，
+\begin{equation}
+  \label{eq:2}
+  q(\bm{\theta}) =   q(\bm{\hat{\theta}}) -
+  \frac{1}{2}(\bm{\theta} - \bm{\hat{\theta}})^T J(\bm{\hat{\theta}}) (\bm{\theta} - \bm{\hat{\theta}}) + o((\bm{\theta} - \bm{\hat{\theta}})^2)
+\end{equation}
+\begin{itemize}
+\item 
+\end{itemize}
+ここで，
+\begin{equation}
+  \label{eq:3}
+  J(\bm{\hat{\theta}}) = - \left.\frac{\partial^2 q(\bm{\theta})}{\partial \bm{\theta} \partial \bm{\theta}^T}\right|_{\bm{\hat{\theta}}}
+\end{equation}
+とした．
+\begin{equation}
+  \label{eq:5}
+  \int \exp\left\{-\frac{1}{2}(\bm{\theta} - \bm{\hat{\theta}})^T J(\bm{\hat{\theta}}) (\bm{\theta} - \bm{\hat{\theta}}) \right\}d\bm{\theta} = (2\pi)^{p/2} n^{-p/2} |J(\bm{\hat{\theta}})|^{-1/2}
+\end{equation}
+より，結局，
+\begin{equation}
+  \label{eq:6}
+    \int \exp(n q(\bm{\theta}))d \bm{\theta} \approx
+    (2\pi)^{p/2} n^{-p/2} |J(\bm{\hat{\theta}})|^{-1/2} \exp(nq(\bm{\hat{\theta}}))
+\end{equation}
+と近似できる．
+

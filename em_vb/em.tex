@@ -1,0 +1,53 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+
+\section{EM Algorithm}
+
+\def\bX{\bm X}
+\def\bZ{\bm Z}
+\newcommand{\argmax}{\mathop{\rm arg~max}\limits}
+\newcommand{\argmin}{\mathop{\rm arg~min}\limits}
+
+\label{sec:em}
+EMアルゴリズムは，潜在変数を持つ確率モデルの最尤解を求めるための一般的手法である．
+変分推論の基礎となる部分でも用いられる．
+\\
+
+パラメータ最尤推定の目的は，尤度関数の最大化である．
+\begin{equation}
+  p(\bX | \bm\theta) = \sum_{\bZ} p(\bX, \bZ | \bm\theta)
+\end{equation}
+ここで，完全データ対数尤度$\ln p(\bX, \bZ | \bm \theta)$を定義する．
+EMアルゴリズムを用いるのは$p(\bX | \bm \theta)$を直接最大化するのが難しいが，
+完全データ大数尤度を最大化するのは容易な場合である．
+ここで，潜在変数$Z$についての分布$q(z)$を導入する．これを用いて，以下の分解が成り立つ
+\begin{eqnarray}
+  \ln p(\bm X|\theta) &=& {\cal L}(q, \bm \theta) + KL(q || p) \nonumber \\
+  {\cal L}(q, \theta) &=& \sum_{\bm Z}q(\bm Z)\ln\left\{\frac{p(\bm X,\bm Z | \bm \theta)}{q(\bm Z)}\right\} \\
+  KL(q||p) &=& - \sum_{\bm Z}q(\bm Z) \ln\left\{\frac{p(\bm Z | \bm X, \bm \theta)}{q(\bm Z)}\right\}
+\end{eqnarray}
+このとき，$KL \geq 0$なので，${\cal L}(q, \theta)$は常に尤度関数の下界となる．
+EMアルゴリズムでは，パラメータ$\bm \theta$を固定してKL距離を0にする$q(\bm Z)$を選ぶE-step, 
+$q(\bm Z)$を固定して${\cal L}$を最大化するM-stepを繰り返す．
+
+E-stepにおいて，KL距離が0になる$q(\bm Z)$を選ぶが，これは$q(\bm Z) = p(\bm Z | \bm X, \bm \theta)$
+のときに成り立つ．このときの$q(\bm Z)$を$p(\bm Z | \bm X, \bm \theta^{old})$とする．
+M-stepではこの分布を用いて${\cal L}$を最大化し，新たなパラメータ
+$\bm \theta$を求める．
+\begin{eqnarray}
+  {\cal L}(q, \bm\theta) &=&
+  \sum_{\bm Z} p(\bm Z | \bm X, \bm \theta^{old}) \ln p(\bm X, \bm Z | \bm \theta)
+ -\sum_{\bm Z} p(\bm Z | \bm X, \bm \theta^{old}) \ln p(\bm Z | \bm X, \bm \theta^{old})　\\
+ &=& Q(\bm \theta, \bm \theta^{old}) + const
+\end{eqnarray}
+ここで，定数項を除いたQ関数を定義した．このQ関数を最大化する$\bm\theta$が$\theta^{new}$となる．
+
+E-stepはExpectation-stepの略であるが，これはQ関数をの定義が完全データ対数尤度の期待値となっているためである．
+また，M-stepはmaximization-stepであり，その期待値をパラメータ$\bm \theta$に関して最大化する．
+これらをまとめると，いかEMアルゴリズムは以下のように表せる．
+
+\begin{eqnarray}
+  E:& \ Q(\bm\theta, \bm\theta^{old})  &= E_{Z} [ \ln p(\bm X, \bm Z | \bm \theta)] \\
+  M:& \ {\bm \theta^{new}} &= \argmax_{\bm\theta} Q(\bm\theta, \bm\theta^{old}) 
+\end{eqnarray}

@@ -1,0 +1,60 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+
+\section{BIC}
+\label{sec:bic}
+モデルの事後分布に基づくモデルの評価基準であるBIC(Baysian Information criterion)を示す．一般に尤度を用いてモデルの比較を行うことはできない．なぜなら，尤度にはパラメータの次元などによるバイアスが含まれているからである\cite{konishi_kitagawa200409}．モデルを複雑にすればするほど尤度を大きくすることができる問題からもこのことは明らかである．BICでは事後分布を考えることによりこの問題を解決してる．
+ただ，BICでは簡単にモデルの評価を行うことができるが，パラメータ事前分布が広がっており，そのヘッセ行列が非退化であるという仮定が多くの場合に妥当でないという問題もある\cite{Bishop201002}．
+
+$P$次元のパラメータ$\bm{\theta}$を持つモデル$M$のもとで観測データ$X=\{\bm{x_1},..., \bm{x_N}\}$が観測されたときを考える．このとき，モデルの事後分布はベイズの定理より，
+\begin{eqnarray}
+  \label{eq:1}
+  p(M|X) = \frac{p(X|M)p(M)}{\int p(X|M)p(M) dM}
+\end{eqnarray}
+となる．この事後確率を最大化するようなモデルを選ぶことがBICの目標である．ここで，p(M)は一定とすると，分母は定数であるので，$p(X|M)$を最大化すれば良いことがわかる．これをパラメータ$\bm{\theta}$を用いてあわらすと，
+\begin{eqnarray}
+  \label{eq:2}
+  p(X|M) = \int p(X|\bm{\theta}) p(\bm{\theta}|M) d\bm{\theta}
+\end{eqnarray}
+となる．この周辺分布$p(X|M)$をLaplace's method(section\ref{sec:laplace})用いて近似する．
+\\
+
+$L(\bm{\theta}) = \ln p(X|\bm{\theta}), \pi(\bm{\theta} = p(\bm{\theta}))$として，ラプラス近似を行う．
+
+\begin{eqnarray}
+  p(X|M) 
+&=& \int \exp(L(\bm{\theta})) \pi(\bm{\theta}) d\bm{\theta}  \nonumber \\
+&\approx& \int \exp\left\{L(\bm{\hat{\theta}}) - \frac{N}{2}(\bm{\theta}-\bm{\hat{\theta}})^TJ(\bm{\hat{\theta}}) (\bm{\theta} - \bm{\hat{\theta}})\right\} 
+\times \left\{\pi(\bm{\hat{\theta}}) + (\bm{\theta} - \bm{\hat{\theta}})^T\frac{\partial \pi(\bm{\theta})}{\partial \bm{\theta}}\right\} d\bm{\theta}\nonumber \\
+&\approx& \exp(L(\bm{\hat{\theta}})) \pi(\bm{\hat{\theta}}) \int \exp \left\{ - \frac{N}{2}(\bm{\theta}-\bm{\hat{\theta}})^TJ(\bm{\hat{\theta}}) (\bm{\theta} - \bm{\hat{\theta}})\right\}d\bm{\theta} \nonumber \\  
+&=& \exp(L(\bm{\hat{\theta}})) \pi(\bm{\hat{\theta}}) (2 \pi)^{P/2}N^{-P/2}|J(\bm{\hat{\theta}})|^{-1/2}
+\label{eq:lap_3}
+\end{eqnarray}
+ただし，
+\begin{eqnarray}
+  \label{eq:4}
+  J(\bm{\hat{\theta}}) = - \frac{1}{N}\frac{\partial^2 L(\bm{\theta})}{\partial \bm{\theta} \partial \bm{\theta}^T} 
+\end{eqnarray}
+として，
+\begin{eqnarray}
+  \label{eq:5}
+  \int (\bm{\theta} - \bm{\hat{\theta}})\exp\left\{- \frac{N}{2}(\bm{\theta}-\bm{\hat{\theta}})^TJ(\bm{\hat{\theta}}) (\bm{\theta} - \bm{\hat{\theta}})\right\} =0
+\end{eqnarray}
+を用いた．対数を取って-2を乗じて，
+\begin{eqnarray}
+  \label{eq:6}
+  -2\ln(p(X|M)) =-2 L(\bm{\hat{\theta}}) -2 \ln(\pi(\bm{\hat{\theta}})) + P\ln N + \ln{ |J(\bm{\hat{\theta}})|}
+\end{eqnarray}
+$N$に関して$O(1)$の項を無視して， 
+\begin{eqnarray}
+  \label{eq:7}
+  BIC = -2 L(\bm{\hat{\theta}}) + P\ln{N}
+\end{eqnarray}
+を得る．
+
+
+
+
+
+

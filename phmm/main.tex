@@ -1,0 +1,88 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+\documentclass[a4paper]{jsarticle}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{theorem}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{bm} % vector
+\usepackage[dvips]{graphicx}
+
+\newtheorem{definition}{Definition}
+\newtheorem{notation}{Notation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{problem}{Problem}
+
+
+\def\enproof{\hfill\ensuremath{\Box}}
+
+\def\E{\ensuremath{\mathbb{E}}}
+\def\R{\ensuremath{\mathbb{R}}}
+\def\Z{\ensuremath{\mathbb{Z}}}
+\def\N{\ensuremath{\mathbb{N}}}
+\def\Q{\ensuremath{\mathbb{Q}}}
+
+\def\G{\ensuremath{\mathbb{G}}} % Group
+\def\F{\ensuremath{\mathbb{F}}} % Field
+
+\def\rin{\in_{U}}
+
+\newcommand{\argmax}{\mathop{\rm argmax}\limits}
+\newcommand{\argmin}{\mathop{\rm argmin}\limits}
+\newcommand{\ent}{\mathop{\rm ent}}
+\newcommand{\med}{\mathop{\rm median}}
+
+\def\enproof{\hfill\ensuremath{\blacksquare}}
+%% \def\Gen{{\bf Gen}}
+%% \def\Enc{{\bf Enc}}
+%% \def\Dec{{\bf Dec}}
+
+\def\Gen{\ensuremath{\mathsf{Gen}}}
+\def\Enc{\ensuremath{\mathsf{Enc}}}
+\def\Dec{\ensuremath{\mathsf{Dec}}}
+\def\Time{\ensuremath{\mathsf{Time}}}
+
+\def\REAL{\ensuremath{\mathsf{REAL}}}
+\def\IDEAL{\ensuremath{\mathsf{IDEAL}}}
+
+\def\LCM{\mathrm{LCM}}
+\def\GCD{\mathrm{GCD}}
+\def\ord{\mathrm{ord}}
+\def\dist{\mathrm{dist}}
+\def\median{\mathrm{median}}
+\def\Minimize{\mathrm{Minimize}}
+
+\def\editdist{\mathrm{editdist}}
+\def\length{\mathrm{length}}
+
+\pagestyle{empty}
+\title{}
+\makeatletter
+    \renewcommand{\theequation}{%
+    \thesection.\arabic{equation}}
+    \@addtoreset{equation}{section}
+\makeatother
+
+
+\author{1y12f078-1 Taikai Takeda}
+\date{2015-06-27 19:49:06}
+\usepackage[backend=bibtex, style=numeric]{biblatex}
+\addbibresource{ref.bib}
+
+\begin{document}
+
+\input{phmm}
+
+\printbibliography
+
+\end{document}
+

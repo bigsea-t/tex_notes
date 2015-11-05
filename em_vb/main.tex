@@ -1,0 +1,28 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+\documentclass{jsarticle}
+\usepackage{bm,amsmath}
+\pagestyle{empty}
+\title{ML NOTE}
+\author{1y12f078-1 Taikai Takeda}
+\date{2015-06-14 13:37:39}
+
+
+
+\makeatletter
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+\@addtoreset{equation}{section}
+\makeatother
+
+\newcommand{\Tabref}[1]{表~\ref{#1}}
+\newcommand{\refeq}[1]{(\ref{#1})}
+\newcommand{\Figref}[1]{図~\ref{#1}}
+
+\begin{document}
+
+\input{em}
+
+\input{vb}
+
+\end{document}

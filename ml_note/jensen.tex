@@ -1,0 +1,38 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+
+\section{Jensen's inequality}
+\label{sec:label}
+
+$f(x)$をconvex downwardとする． $\forall \lambda_n \geq 0, x_n(n=1,...,N) | \sum^N_{n = 1}\lambda_n = 1$のとき，
+\begin{eqnarray}
+  \sum^N_{n=1}\lambda_nf(x_n) \geq f(\sum^N_{n=1}\lambda_n x_n)
+\end{eqnarray}
+が成り立つ．これををJensen's inequalityという．
+
+\begin{proof}
+  convex downwardの定義より，
+\begin{eqnarray}
+\forall \lambda, x_1, x_2 | 0 \leq \lambda \leq 1 \Rightarrow&
+ \nonumber \\ 
+\lambda f(x_1) + (1-\lambda) f(x_2) \geq& f(\lambda x_1 + (1-\lambda) x_2)
+\end{eqnarray}
+なので，N=2のときにはJensen's ineqalityは明らかに成り立つ．\\
+また，N=kのときにJensen's inequalityが成り立つとすると，
+\begin{eqnarray}
+  \sum^{k+1}_{n=1} \lambda_n f(x_n) 
+&=& \sum^k_{n+1} \lambda_nf(x_n) + \lambda_{k+1} f(x_{k+1}) \nonumber \\ 
+&(&A = \sum^k_{n=1} \lambda_n \mbox{として，}) \nonumber \\
+&=& A \sum^k_{n=1} \frac{\lambda_n}{A} f(x_n)+ \lambda_{k+1} f(x_{k+1}) \nonumber \\ 
+&\geq& A \sum^k_{n=1} \frac{\lambda_n}{A} f(x_n)+ \lambda_{k+1} f(x_{k+1}) \nonumber \\
+&\geq& A f(\sum^k_{n=1} \frac{\lambda_n}{A} x_n) + \lambda_{k+1} f(x_{k+1}) \ \ (\because \sum_{n=1}^k \frac{\lambda_n}{A} = 1,
+\mbox{上の仮定}) \nonumber \\
+&\geq& f(\sum^{k+1}_{n=1} \lambda_n x_n ) \ \ (\because A+\lambda_k = 1, \mbox{凸関数の定義})
+\end{eqnarray}
+
+よって帰納的に，任意の整数$N>2$についてJnensen's inequalityが成り立つ．Q.E.D.
+
+\end{proof}
+
+直感的には，任意の凸関数上の点をとったときに，その点を結んでできる多角形の内部の点は凸関数上の点よりも上にあるということで理解できる．

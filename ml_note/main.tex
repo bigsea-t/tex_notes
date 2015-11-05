@@ -1,0 +1,29 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+\documentclass{jsarticle}
+\pagestyle{empty}
+\title{}
+\usepackage{amsthm,amsmath,amssymb,bm}
+\makeatletter
+    \renewcommand{\theequation}{%
+    \thesection.\arabic{equation}}
+    \@addtoreset{equation}{section}
+\makeatother
+
+
+\author{1y12f078-1 Taikai Takeda}
+\date{2015-06-27 19:49:06}
+\usepackage[backend=bibtex, style=numeric]{biblatex}
+\addbibresource{ref.bib}
+
+\begin{document}
+
+\input{jensen}
+\input{laplace}
+\input{bic}
+
+\printbibliography
+
+\end{document}
+

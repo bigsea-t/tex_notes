@@ -1,0 +1,57 @@
+%
+% Copyright(c) 2015 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+
+\section{Variational  Bayes}
+\label{sec:vb}
+
+\def\cL{{\cal L}}
+\def\tp{\tilde{p}}
+
+Variational Bayes(VB，変分ベイズ)は，正確に求めることが難しい
+潜在変数の事後分布$p(\bm Z|\bm X)$を近似する枠組みである．
+同様の目的の手法としてSampling法があるが，計算量の点でVBが有利である．
+\\
+
+EMアルゴリズムと同様に，我々の目的は事後分布$p(\bm Z| \bm X)$およびモデルのエビデンス$p(X)$を求めることである．
+なお，EMアルゴリズムではパラメータ集合$\bm \theta$を定義したが，ここでは確率変数として$\bm Z$に含まれていることにする．
+\begin{eqnarray}
+  \ln p(\bm X) &=& \cL(q) + KL(q || p) \\
+  \cL(q) &=& \int_{\bm Z}q(\bm Z)\ln\left\{\frac{p(\bm X,\bm Z )}{q(\bm Z)}\right\} d \bm Z\\
+  KL(q||p) &=& - \int_{\bm Z}q(\bm Z) \ln\left\{\frac{p(\bm Z | \bm X)}{q(\bm Z)}\right\} d \bm Z
+\end{eqnarray}
+
+EMアルゴリズムの場合と同様に，KL距離を最小化する事により最適化を行いたいが，
+ここでは真の事後分布$p(\bm Z | \bm X)$を求めるのが不可能であると仮定する．
+したがって，代わりにある制限したクラスの$q(\bm Z)$を考え，この中での最適化を考える事になる．
+
+$\bm Z$に関して，$\bm Z$の要素をいくつかのグループに分解し，それらが独立であることを仮定する．
+\begin{equation}
+  q(\bm Z) = \prod^M_i\bm q_i(Z_i)
+\end{equation}
+この仮定のもとで，エビデンスの下界$\cL$を最大化することを考える．したがって，$q(\bm Z)$の各因子それぞれに関して，
+順番に最適化を行っていく．記法を簡単にするために$q_i(Z_i)$を$q_i$とし，$\cL$を$q_i$の関数とみなす．
+\begin{eqnarray}
+  \cL(q_j)
+  &=& \int_{\bm Z}\prod^M_i q_i \left\{ \ln p (\bm X, \bm Z) - \sum^M_i \ln q_i \right\} d \bm Z \nonumber \\
+  &=& \int q_j \left\{ \int \prod_{i \neq j} q_i \ln p (\bm X, \bm Z) d \bm Z_i \right\} d \bm Z_j
+      - \int \prod_i q_i \sum_i \ln q_i d \bm Z + const \nonumber \\
+  &=& \int q_j \left\{ \int \prod_{i \neq j} q_i \ln p (\bm X, \bm Z) d \bm Z_i \right\} d \bm Z_j
+      - \sum_i \int \prod_i q_i \ln q_i d \bm Z + const \nonumber \\
+  &=& \int q_j \left\{ \int \prod_{i \neq j} q_i \ln p (\bm X, \bm Z) d \bm Z_i \right\} d \bm Z_j
+      - \int q_j \ln q_j d \bm Z_j + const \nonumber \\
+  &=& \int q_j \ln \tp(\bm X, \bm Z_j) d \bm Z_j - \int q_j \ln q_j d \bm Z_j + const
+  \label{eq:independent_L}
+\end{eqnarray}
+ここで，新しい分布
+\begin{equation}
+\tp(\bm X, \bm Z_j) = E_{i \neq j}[\ln p(\bm X, \bm Z)] + const 
+\end{equation}
+を定義した．\refeq{eq:independent_L}の最大化を考えるが，これは$q_i$と$\tp(\bm X, \bm Z_j)$の
+負のKL距離となっていることが分かる．よって，
+\begin{equation}
+  \ln q_i^* = E_{i \neq j}[\ln p(\bm X, \bm Z)] + const 
+\end{equation}
+のときに$\cL$は最大になる．なお，定数項を得るためには分布を正規化すれば良い．
+
+
