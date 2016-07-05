@@ -58,7 +58,7 @@
 \label{sec:phmm}
 Pairwise HMMとは2つのsequence data（DNAの塩基配列やタンパク質のresidue配列）の類似度をモデル化したHMMである．これはdiscrete HMMの拡張であると考えることができるが，一般的なdiscrite HMMとは出力が２つのシンボルの組になるという点で異なる．隠れ状態の状態遷移図は以下のようになる．$M$はMatch状態，$X,Y$はそれぞれの配列の挿入状態を表す．
 
-\begin{figure}[hc]
+\begin{figure}[]
   \centering
   \includegraphics[width=0.3\textwidth, bb=0 0 300 400]{graffe/phmm_simple.pdf}  
   \caption{phmmの状態遷移図}
@@ -68,7 +68,7 @@ Pairwise HMMとは2つのsequence data（DNAの塩基配列やタンパク質の
 \label{subsec:phmm_nt}
 定式化する上でNotationを整理する．観測変数はシンボル列$\bm{x}, \bm{y}$である．
 \begin{align}
-\bm{x}&=(x^1,...,y^{T_x})\\
+\bm{x}&=(x^1,...,x^{T_x})\\
 \bm{y}&=(y^1,...,y^{T_y})\\
 \end{align}
 観測変数$x^i, y^j$に対応する隠れ変数$\bm{z}^{ij}$は以下のように定義する．ここで，$x^i$もしくは$y^j$の代わりにgapを許す（観測されたシンボルが対応しない場合がある）．
@@ -123,7 +123,10 @@ p(\bm{z}^{11}|\bm{\alpha})
 \end{align}
 である．
 
+\subsection{Biterbi Algorithm}
+
 \subsection{EM algorithm}
+
 \label{subsec:em}
 EM algorithmによりパラメタの最適化を行う．EMアルゴリズムは以下のようなくり返しのアルゴリズムである．
 \begin{align}
