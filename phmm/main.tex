@@ -1,0 +1,70 @@
+\documentclass[]{llncs} % A4 paper and 11pt font size
+
+\usepackage{mymath}
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+\usepackage{url}
+\usepackage{subcaption}
+\usepackage[labelfont=bf]{caption}
+\captionsetup{compatibility=false}
+\usepackage{cancel}
+\usepackage[backend=biber,
+style=lncs
+]{biblatex}
+\bibliography{ref}
+
+\begin{document}
+\mainmatter  % start of an individual contribution
+
+% first the title is needed
+\title{Pairwise HMM}
+
+% a short form should be given in case it is too long for the running head
+\titlerunning{Pairwise HMM}
+
+% the name(s) of the author(s) follow(s) next
+%
+% NB: Chinese authors should write their first names(s) in front of
+% their surnames. This ensures that the names appear correctly in
+% the running heads and the author index.
+%
+\author{Taikai Takeda%
+\thanks{}%
+\and ...}
+\urldef{\mails}\path|{297.1951}@gmail.com|
+
+\authorrunning{}
+% (feature abused for this document to repeat the title also on left hand pages)
+
+% the affiliations are given next; don't give your e-mail address
+% unless you accept that it will be published
+\institute{Waseda University, Japan\\
+\mails
+}
+\renewcommand{\mathbf}[1]{\vec{#1}}
+%
+% NB: a more complex sample for affiliations and the mapping to the
+% corresponding authors can be found in the file "llncs.dem"
+% (search for the string "\mainmatter" where a contribution starts).
+% "llncs.dem" accompanies the document class "llncs.cls".
+%
+
+\toctitle{toc title}
+\tocauthor{tocauthor}
+\maketitle
+
+\begin{abstract}
+.
+\end{abstract}
+
+\input{pair_align}
+\input{hmm}
+\input{phmm}
+
+
+
+\printbibliography
+%\input{appendix}
+\end{document}

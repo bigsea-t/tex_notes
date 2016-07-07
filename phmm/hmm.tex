@@ -1,0 +1,88 @@
+%
+% Copyright(c) 2016 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+\section{HMM}
+HMM (Hidden Markov Model) has been widely used for from gene alignment to speech recognitions. Let us introduce simple HMM before presenting Pairwise HMM.
+
+\subsection{Formulation}
+Let $\mathcal{D}=\vec{X} = (X_1, ..., X_T)$ and $\vec{Z} = (Z_1, ..., Z_T)$ be, respectively, observed and hidden random variables. 
+Let $\mathcal{A}$ be a set of simbols and a set of hidden states be $\mathcal{S}$.
+Input data is a set of sequences, $\vec{x} = (\vec{x}^1, ..., \vec{x}^{N})$ where $n$-th sequence $\vec{x}^n \in \mathcal{A}^{T_n}$ is $T_n$ is the length of the sequence.
+Similarly, hidden states are denoted as $\vec{z} = (\vec{z}^1, ..., \vec{z}^{N})$ where $n$-th sequence $\vec{z}^n \in \mathcal{S}^{T_n}$. Note that we sometimes omit superscript $n$ when concentrating on a single sequence for the sake of notational simplicity.
+The corresponding joint disribution has the form
+\begin{eqnarray}
+  p(\vec{X}, \vec{Z} | \vec{\theta}) = p(Z_1\vec{\alpha}) \prod_{t=2}^T p(Z_t|Z_{t-1}, \vec{\beta}) \prod_{t=1}^T p(X_t | Z_t, \mathbf{\phi})
+\end{eqnarray}
+where $\mathbf{\theta} = \{\mathbf{\alpha}, \mathbf{\beta}, \mathbf{\phi} \}$. $p(Z_1| \vec{\alpha})$ , $p(Z_t|Z_{t-1}, \mathbf{\beta})$ and $p(X_t|Z_t, \mathbf{\phi})$ are an initial probability, a transition probability, an emission probability, respectively.
+They are described, respectively, as $p(Z_1 = k, \vec{\alpha}) = \alpha_k$, $p(Z_t = k|Z_{t-1}=j, \mathbf{\beta}) = \beta_{jk}$ and $p(X_t|Z_t = k, \mathbf{\phi}) = p(X_t|\phi_k)$. 
+$\vec{\alpha} = \{\alpha\}_k$ is $K-$dimensional vector  and $\mathbf{\beta} = \{\beta\}_{jk}$ is $K \times K$ matrix where $K$ is the number of hidden states.
+
+\subsection{Forward-Backward Algorithm}
+We here discuss how to compute the smoothed marginal $p(z_t = j| \vec{x})$ and tghe smoothed two-sliced marginal $p(z_{t-1},z_t| \vec{x})$.\footnote{Note that in online setting, we can only compute $p(z_t = j| \vec{x_{1:t}})$, so called filtered marginal, but we concentrate on the offline setting here.}
+
+Taking a look at the graphical model in Fig(), we can see conditioning on $z_t$ eable to decompose joint distribution into two parts: the past and the future. 
+\begin{eqnarray}
+p(z_t= k| \mathbf{x}) \propto p(z_t=k, \mathbf{x}_{t+1:T}| \mathbf{x}_{1:t})  \propto p(z_t=k|\mathbf{x}_{1:t}) p(\mathbf{x}_{t+1:T}|z_t=k)
+\end{eqnarray}
+Let us define forward variables $f_{t,k} = p(z_t = k | \vec{x}_{1:t})$, the bilief of the state given all the previous sequence. 
+Also, define backward variables $b_{t,k} = p(\mathbf{x}_{t+1:T}|z_t=k)$, the conditional likelihood of future evidence give the hidden staetes $z_t$.
+Forward variables are efficiently computed using dynamic programming. The base case and the recursive relationship is given as follows:
+\begin{eqnarray}
+  f_{t,k} &=& p(z_t = k | \vec{x}_{1:t}) \nonumber \\
+          &=& \frac{p(z_t = k, x_t|\vec{x}_{1:t-1})}  {p(x_t|\vec{x}_{1:t-1})} \nonumber \\  
+          &=& \frac{p(x_t|z_t=k, \cancel{\vec{x}_{1:t-1}})p(z_t = k|\vec{x}_{1:t-1})}  {p(x_t|\vec{x}_{1:t-1})} \nonumber \\  
+          &=& \frac{p(x_t|z_t=k) \sum_{j=1}^K p(z_t = k | z_{t-1} = j)p(z_{t-1} = j|\vec{x}_{1:t-1})}  {p(x_t|\vec{x}_{1:t-1})} \nonumber \\  
+          &=& p(x_t| z_t = k) \sum_{j=1}^K  \beta_{j,k} f_{t-1,k} \\
+  f_{1, k} &=& p(z_1 = k) = \alpha_k
+\end{eqnarray}
+\footnote{MEMO: should we define emission notation e.g. $\psi_{t,k}$}
+Similarly, backward variables are computed using following equations:
+\begin{eqnarray}
+b_{t-1,j} &=& p(\vec{x}_{t:T}|z_{t-1}=j) \nonumber \\
+          &=& \sum_{j=1}^K p(\vec{x}_{t:T}, z_{t}=j| z_{t-1}=j) \nonumber \\
+          &=& \sum_{j=1}^K p(z_{t}=k| z_{t-1}=j) p(\vec{x}_{t:T}| z_t=k, \cancel{z_{t-1}=j}) \nonumber \\
+          &=& \sum_{j=1}^K p(z_{t}=k| z_{t-1}=j) p(x_t|z_t=k) p(\vec{x}_{t+1:T}| z_t=k) \nonumber \\
+          &=& \sum_{j=1}^K \beta_{j,k} \psi_{t,k} b_{t,k}  
+\end{eqnarray}
+Now, we can compute smoothed posterior using forward and backward variables. Let us denote smoothed posterior $\gamma_{t,k} = p(z_t = k|\vec{x}_{1:T})$ and smoothed two-sliced marginal $\xi_{t,j,k} = p(z_{t-1},z_t| \vec{x})$
+
+\begin{eqnarray}
+  \gamma_{t,k} &\propto& f_{t,k} b_{t,k}
+\end{eqnarray}
+Also, smoothed two-sliced marginal is computed as follows:
+\begin{eqnarray}
+  \xi_{t,j,k} 
+  &=&  p(z_{t-1},z_t| \vec{x}_{1:T}) \nonumber \\
+  &\propto& p(z_t, z_{t-1}, \vec{x}_{t:T}|\vec{x}_{1:t-1}) \nonumber \\
+  &=& p(z_{t-1}|\mathbf{x}_{1:t-1})p(z_t, \mathbf{x}_{t:T}|z_{t-1}, \cancel{\mathbf{x}_{1:t-1}}) \nonumber \\
+  &=& p(z_{t-1}|\mathbf{x}_{1:t-1})p(z_t|z_{t-1})p(\mathbf{x}_{t:T}|z_t, \cancel{z_{t-1}}) \nonumber \\
+  &=& p(z_{t-1}|\mathbf{x}_{1:t-1})p(z_t|z_{t-1})p(x_t|z_t)p(\mathbf{x}_{t+1:T}|z_t, \cancel{x_t}) \nonumber \\
+  &=& f_{t-1,j}p(z_t|z_{t-1})p(x_t|z_t)b_{t,k}
+\end{eqnarray}
+\subsection{Parameter Optimizations via EM}
+The paramters can be learned from the daaset using EM (Expectation Maximization), which is also called Baum-Welch specifically for HMM. Likelihood function $l(\mathbf{\theta}) = p(\vec{X} | \mathbf{\theta}) = \sum_Z p(\vec{X}, \vec{Z})$ is hard to optimize because it includes partition function over all the possible states of the hidden states.
+
+The complete data log likelyhood $l_c(\vec{\theta})$ is written down as 
+\begin{eqnarray}
+l_c(\mathbf{\theta}) = \sum_{n=1}^N \left[ \ln p(z^n_1| \mathbf{\alpha}) 
++ \sum_{t=2}^T\ln p(z^n_t| z^n_{t-1}, \mathbf{\beta})
++ \sum_{t=1}^T\ln p(x^n_t | z^n_{t}, \mathbf{\phi})
+\right]
+\end{eqnarray}
+The auxilary function $Q(\mathbf{\theta}, \mathbf{\theta}^{old})$, the expected complete log likelihood, is given by
+\begin{eqnarray}
+Q(\mathbf{\theta}, \mathbf{\theta}^{old}) &=& E_{p(\vec{Z}|\vec{x}, \mathbf{\theta}^{old})}[l_c(\mathbf{\theta})] \nonumber \\
+&=& \sum_{n=1}^N \left[ \ln p(z^n_1| \mathbf{\alpha}) 
++ \sum_{t=2}^T\ln p(z^n_t| z^n_{t-1}, \mathbf{\beta})
++ \sum_{t=1}^T\ln p(x^n_t | z^n_{t}, \mathbf{\phi})
+\right]
+\end{eqnarray}
+
+
+...
+
+\subsection{Viterbi decoding}
+Choose the optimal sequence of hiden states.
+...
+
+

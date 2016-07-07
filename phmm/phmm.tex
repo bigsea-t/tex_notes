@@ -1,0 +1,11 @@
+\section{Pairwise HMM}
+Pairwise HMM (PHMM) is probablistic generative model used for pairwise sequence alignment. Given transition and emission probability distributions, it can compute likelyhood of `similarity' as well as the most probable alignment. Furthermore, it is possible to optimize parameters by iterative procedure (EM algorithm). This one of discrete HMMs, but different from them as the length of hidden states changes dinamically according to the alighment. We will introduce PHMM using analogy to simple HMM.
+
+\subsection{Formulation}
+Let input 
+ Let $\mathcal{A}$ be a set of simbols. For DNA alignment, $\mathcal{A} = \{``A", ``T", ``G", ``C"\}$. Input data is two sequences, $\vec{x} = (x^1, ... x^{T_x}) \in \mathcal{A}^{T_x}$ and $\vec{y} = (y^1, ..., y^{T_y}) \in \mathcal{A}^{T_y}$ where $T_x$ and $T_y$ are the length of sequences of $\vec{x}$ and $\vec{y}$, respectively. A set of hidden states is $\mathcal{S}$. In the simpliest case shown in Fig (), $\mathcal{S} = \{``M", ``X", ``Y"\}$. Hidden random variablesre denoted as $\vec{z} = (z^1, ..., z^{T_z})$
+
+
+\subsection{EM}
+
+
