@@ -15,6 +15,8 @@ style=lncs
 ]{biblatex}
 \bibliography{ref}
 
+\usepackage{mymath}
+
 \begin{document}
 \mainmatter  % start of an individual contribution
 
@@ -31,10 +33,11 @@ style=lncs
 % the running heads and the author index.
 %
 \author{Taikai Takeda%
-\thanks{}%
-\and ...}
-\urldef{\mails}\path|{297.1951}@gmail.com|
-
+%h\thanks{}%
+%\and ...
+}
+%\urldef{\mails}\path|{297.1951}@gmail.com|
+\urldef{\mails}\path|297.1951@gmail.com|
 \authorrunning{}
 % (feature abused for this document to repeat the title also on left hand pages)
 
@@ -43,7 +46,6 @@ style=lncs
 \institute{Waseda University, Japan\\
 \mails
 }
-\renewcommand{\mathbf}[1]{\vec{#1}}
 %
 % NB: a more complex sample for affiliations and the mapping to the
 % corresponding authors can be found in the file "llncs.dem"
