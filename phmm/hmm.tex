@@ -5,6 +5,8 @@
 HMM (Hidden Markov Model) has been widely used for from gene alignment to speech recognitions. Let us introduce simple HMM before presenting Pairwise HMM.
 
 \subsection{Formulation}
+Let $\mathcal{D}=\vec{X} = (X_1, ..., X_T)$ and $\vec{Z} = (Z_1, ..., Z_T)$ be, respectively, observed and hidden random variables. 
+
 The graphical model of HMM is shown in Fig.\ref{fig:hmm_graph}. We will present formal definitions here.
 Let $\mathcal{A}$ be a set of simbols and a set of hidden states be $\mathcal{S}$.
 Input data is a set of sequences, $\vec{x} = (\vec{x}^1, ..., \vec{x}^{N})$ where $n$-th sequence $\vec{x}^n \in \mathcal{A}^{T_n}$ is $T_n$ is the length of the sequence.
@@ -22,8 +24,7 @@ $\vec{\alpha} = \{\alpha\}_k$ is $K-$dimensional vector and $\mathbf{\beta} = \{
   \includegraphics[width=.8\linewidth]{hmm_graph.pdf}
   \caption{{\bf Grahpical Model of HMM}}
   \label{fig:hmm_graph}
-\end{figure}Let $\mathcal{D}=\vec{X} = (X_1, ..., X_T)$ and $\vec{Z} = (Z_1, ..., Z_T)$ be, respectively, observed and hidden random variables. 
-
+\end{figure}
 
 \subsection{Forward-Backward Algorithm}
 We here discuss how to compute the smoothed marginal $p(z_t = j| \vec{x})$ and tghe smoothed two-sliced marginal $p(z_{t-1},z_t| \vec{x})$.\footnote{Note that in online setting, we can only compute $p(z_t = j| \vec{x_{1:t}})$, so called filtered marginal, but we concentrate on the offline setting here.}
