@@ -42,17 +42,17 @@ We introduce PHMM version of Forward-Backward Algorithm.
 It is similar to that of the ordinary HMM, but a bit different because of the uncertain alignment. 
 We need to give the formulation for each hidden states because the procedure of DP is a bit different each other.
 We start with the case where the target hidden variable is $M$ state. 
-Define the smoothed marginal $p(z_{t, u} = M | \vec{x}, \vec{y})$ where $z_{t, u}$ is the hidden variable that corresponds to $t, u$ (how can I explain this???). Note that we cannot compute scaling version so forward and backward algorithm are slightly modified not to have scaling variable.
+Define the smoothed marginal $p(z_{t, u} = M | \vec{x}, \vec{y})$ where $z_{t, u}$ is the hidden variable that corresponds to $t, u$ (how can I explain this???). Note that we cannot compute scaling version so forward and backward algorithm are slightly modified so that it does not contain scaling.
 \begin{eqnarray}
   p(z_{t,u} = M | \vec{x}, \vec{y}) 
                             &=& \frac{ p(z_{t, u}=M , \vec{x}_{1:t}, \vec{y}_{1:u}) p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber \\
-                            &=& \frac{1}{c} f_{M, t, u} b_{M, t, u}
+                            &=& \frac{1}{c_{t,u}} f_{M, t, u} b_{M, t, u}
 \end{eqnarray}
 Forward variable $f_{M, t, u}$, backward variable $b_{M, t, u}$ and normalization constant $c_{t, u}$ are difined as:
 \begin{eqnarray}
-  f_{M, t, u} &=& p(z_{t, u}=M , \vec{x}_{1:t}, \vec{y}_{1:u}) \\
+  f_{M, t, u} &=& p(z_{t, u}=M | \vec{x}_{1:t}, \vec{y}_{1:u}) \\
   b_{M, t, u} &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) \\
-  c    &=& p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})
+  c_{t, u}    &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u})
 \end{eqnarray}
 Similarly, the smoothed marginal of the hidden state $X$ and $Y$ are written as:
 \begin{eqnarray}
