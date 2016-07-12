@@ -1,0 +1,58 @@
+%
+% Copyright(c) 2016 Taikai Takeda <297.1951@gmail.com> All rights reserved.
+%
+\subsubsection{Scaling Version of PHMM Forward Backward Algorithm (unfeasible)}
+\begin{eqnarray}
+  p(z_{t,u} = M | \vec{x}, \vec{y}) 
+                            &=& \frac{ p(z_{t, u}=M | \vec{x}_{1:t}, \vec{y}_{1:u}) p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) } {p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u})} \nonumber \\
+                            &=& \frac{1}{c_{t,u}} f_{M, t, u} b_{M, t, u}
+\end{eqnarray}
+Forward variable $f_{M, t, u}$, backward variable $b_{M, t, u}$ and normalization constant $c_{t, u}$ are difined as:
+\begin{eqnarray}
+  f_{M, t, u} &=& p(z_{t, u}=M | \vec{x}_{1:t}, \vec{y}_{1:u}) \\
+  b_{M, t, u} &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) \\
+  c_{t, u}    &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u})
+\end{eqnarray}
+Similarly, the smoothed marginal of the hidden state $X$ and $Y$ are written as:
+\begin{eqnarray}
+p(z_{t,u} = X | \vec{x}, \vec{y}) &=& \frac{ p(z_{t, u}=X, \vec{x}_{t+1:T_x}, \vec{y}_{u:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u-1}) } {p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u-1})} \nonumber\\
+                            &=& \frac{ p(z_{t, u}=X | \vec{x}_{1:t}, \vec{y}_{1:u-1}) p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y} | z_{t, u}= X) } {p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u-1})} \nonumber \\
+                            &=& \frac{1}{c_{t,u-1}} f_{X, t, u} b_{X, t, u} \\
+p(z_{t,u} = Y | \vec{x}, \vec{y}) &=& \frac{ p(z_{t, u}=Y, \vec{x}_{t:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t-1}, \vec{y}_{1:u}) } {p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t-1}, \vec{y}_{1:u})} \nonumber\\
+                            &=& \frac{ p(z_{t, u}=Y | \vec{x}_{1:t-1}, \vec{y}_{1:u}) p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= Y) } {p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t-1}, \vec{y}_{1:u})} \nonumber \\
+                            &=& \frac{1}{c_{t-1,u}} f_{Y, t, u} b_{Y, t, u}
+\end{eqnarray}
+where forward and backward variables are defined as:
+\begin{eqnarray}
+  f_{X, t, u} &=& p(z_{t, u}=X | \vec{x}_{1:t}, \vec{y}_{1:u-1}) \\
+  b_{X, t, u} &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y} | z_{t, u}= X)  \\
+  f_{Y, t, u} &=& p(z_{t, u}=Y | \vec{x}_{1:t-1}, \vec{y}_{1:u}) \\
+  b_{Y, t, u} &=& p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= Y) 
+\end{eqnarray}
+Now we can construct the procedure of DP. Let us write down the recurrence relation in the case where $z_{t,u} = M$. (it is hard to compute the denomitor so we should give up scaling? ... denomiter differ according to the hidden states)
+\begin{eqnarray}
+f_{M, t, u} &=& p(z_{t, u}=M | \vec{x}_{1:t}, \vec{y}_{1:u}) \nonumber \\
+            &=& \frac{p(z_{t, u}=M, x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \nonumber \\
+            &=& \frac{p(x_t, y_u |z_{t, u}=M) p(z_{t, u}=M| \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \nonumber\\
+            &=& \frac{p(x_t, y_u |z_{t, u}=M) p(z_{t, u}=M| \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \nonumber\\
+            &=& \frac{p(x_t, y_u |z_{t, u}=M)} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \times \nonumber \\
+&&\big[p(z_{t, u}=M| z_{t-1, u-1} = M)p(z_{t-1,u-1} = M | \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) + \nonumber \\
+&&\ p(z_{t, u}=M| z_{t-1, u} = X)p(z_{t-1,u} = X | \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) + \nonumber \\
+&&\ p(z_{t, u}=M| z_{t, u-1} = Y)p(z_{t,u-1} = Y | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})  \big]\nonumber \\
+&=& \frac{\psi_{M, t, u}}{d_{t,u}} [\beta_{M,M} f_{M,t-1,u-1} + \beta_{X,M} f_{t-1, u} + \beta_{Y,M} f_{Y, t, u-1}]\\
+  b_{M, t, u}
+            &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) \nonumber \\
+            &=& \sum_{k \in \mathcal{S}}p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} z_{t+1, u+1} = k| z_{t, u}= M) \nonumber\\
+            &=& \sum_{k \in \mathcal{S}}p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y}|z_{t+1, u+1}=k) p(z_{t+1, u+1} = k| z_{t, u}= M)\nonumber \\ 
+            &=& p(x_{t+1}, y_{u+1}|z_{t+1, u+1}=M)p(\vec{x}_{t+2:T_x}, \vec{y}_{u+2:T_y}|z_{t+1, u+1}=M) p(z_{t+1, u+1} = M| z_{t, u}= M) +\nonumber \\ 
+            && p(x_{t+1}|z_{t+1, u+1}=X)p(\vec{x}_{t+2:T_x}, \vec{y}_{u+1:T_y}|z_{t+1, u+1}=X) p(z_{t+1, u+1} = X| z_{t, u}= M) + \nonumber \\ 
+            && p(y_{t+1}|z_{t+1, u+1}=Y)p(\vec{x}_{t+1:T_x}, \vec{y}_{u+2:T_y}|z_{t+1, u+1}=Y) p(z_{t+1, u+1} = Y| z_{t, u}= M) \nonumber \\ 
+            &=& \psi_{M, t+1, u+1} b_{M, t+1, u+1} \beta_{M,M} + \psi_{X, t+1, u} b_{X, t+1, u} \beta_{M,X} + \psi_{Y, t, u+1} b_{Y, t, u+1} \beta_{M,Y}
+\end{eqnarray}
+where $d_{t,u}$ is defined as:
+\begin{eqnarray}
+  d_{t,u} = {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} 
+\end{eqnarray}
+
+
+

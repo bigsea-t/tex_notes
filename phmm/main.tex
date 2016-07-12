@@ -1,5 +1,5 @@
 \documentclass[]{llncs} % A4 paper and 11pt font size
-
+\usepackage[toc,page]{appendix}
 \usepackage{mymath}
 \usepackage{amssymb}
 \setcounter{tocdepth}{3}
@@ -16,6 +16,13 @@ style=lncs
 \bibliography{ref}
 
 \usepackage{mymath}
+
+% for appendix ref: http://tex.stackexchange.com/questions/179997/using-package-appendix-with-llncs
+\makeatletter
+\newcommand{\@chapapp}{\relax}%
+\makeatother
+
+
 
 \begin{document}
 \mainmatter  % start of an individual contribution
@@ -65,8 +72,11 @@ style=lncs
 \input{hmm}
 \input{phmm}
 
-
-
+\begin{appendices}
+\renewcommand{\thesection}{\appendixname~\Alph{section}}
+\input{scaling_phmm}    
+\end{appendices}
 \printbibliography
-%\input{appendix}
+
+
 \end{document}

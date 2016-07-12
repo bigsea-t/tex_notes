@@ -45,42 +45,42 @@ We start with the case where the target hidden variable is $M$ state.
 Define the smoothed marginal $p(z_{t, u} = M | \vec{x}, \vec{y})$ where $z_{t, u}$ is the hidden variable that corresponds to $t, u$ (how can I explain this???). Note that we cannot compute scaling version so forward and backward algorithm are slightly modified so that it does not contain scaling.
 \begin{eqnarray}
   p(z_{t,u} = M | \vec{x}, \vec{y}) 
-                            &=& \frac{ p(z_{t, u}=M , \vec{x}_{1:t}, \vec{y}_{1:u}) p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber \\
-                            &=& \frac{1}{c_{t,u}} f_{M, t, u} b_{M, t, u}
+  &=&\frac{ p(z_{t, u}=M, \vec{x}_{1:T_x}, \vec{y}_{1:T_y}) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber\\
+  &=& \frac{ p(z_{t, u}=M , \vec{x}_{1:t}, \vec{y}_{1:u}) p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber \\
+  &=& \frac{1}{c} f_{M, t, u} b_{M, t, u}
 \end{eqnarray}
 Forward variable $f_{M, t, u}$, backward variable $b_{M, t, u}$ and normalization constant $c_{t, u}$ are difined as:
 \begin{eqnarray}
-  f_{M, t, u} &=& p(z_{t, u}=M | \vec{x}_{1:t}, \vec{y}_{1:u}) \\
+  f_{M, t, u} &=& p(z_{t, u}=M , \vec{x}_{1:t}, \vec{y}_{1:u}) \\
   b_{M, t, u} &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) \\
-  c_{t, u}    &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u})
+  c    &=& p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})
 \end{eqnarray}
 Similarly, the smoothed marginal of the hidden state $X$ and $Y$ are written as:
 \begin{eqnarray}
-p(z_{t,u} = X | \vec{x}, \vec{y}) &=& \frac{ p(z_{t, u}=X, \vec{x}_{t+1:T_x}, \vec{y}_{u:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u-1}) } {p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u-1})} \nonumber\\
-                            &=& \frac{ p(z_{t, u}=X | \vec{x}_{1:t}, \vec{y}_{1:u-1}) p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y} | z_{t, u}= X) } {p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y}| \vec{x}_{1:t}, \vec{y}_{1:u-1})} \nonumber \\
-                            &=& \frac{1}{c_{t,u-1}} f_{X, t, u} b_{X, t, u} \\
-p(z_{t,u} = Y | \vec{x}, \vec{y}) &=& \frac{ p(z_{t, u}=Y, \vec{x}_{t:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t-1}, \vec{y}_{1:u}) } {p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t-1}, \vec{y}_{1:u})} \nonumber\\
-                            &=& \frac{ p(z_{t, u}=Y | \vec{x}_{1:t-1}, \vec{y}_{1:u}) p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= Y) } {p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y}| \vec{x}_{1:t-1}, \vec{y}_{1:u})} \nonumber \\
-                            &=& \frac{1}{c_{t-1,u}} f_{Y, t, u} b_{Y, t, u}
+p(z_{t,u} = X | \vec{x}, \vec{y}) &=& \frac{ p(z_{t, u}=X, \vec{x}_{1:T_x}, \vec{y}_{1:T_y}) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber\\
+                            &=& \frac{ p(z_{t, u}=X , \vec{x}_{1:t}, \vec{y}_{1:u-1}) p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y} | z_{t, u}= X) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber \\
+                                  &=& \frac{1}{c} f_{X, t, u} b_{X, t, u} \\
+  p(z_{t,u} = Y | \vec{x}, \vec{y}) &=& \frac{ p(z_{t, u}=Y, \vec{x}_{1:T_x}, \vec{y}_{1:T_y}) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber\\
+                            &=& \frac{ p(z_{t, u}=Y , \vec{x}_{1:t-1}, \vec{y}_{1:u}) p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= Y) } {p(\vec{x}_{1:T_x}, \vec{y}_{1:T_y})} \nonumber \\
+                                  &=& \frac{1}{c} f_{Y, t, u} b_{Y, t, u}
 \end{eqnarray}
 where forward and backward variables are defined as:
 \begin{eqnarray}
-  f_{X, t, u} &=& p(z_{t, u}=X | \vec{x}_{1:t}, \vec{y}_{1:u-1}) \\
+  f_{X, t, u} &=& p(z_{t, u}=X , \vec{x}_{1:t}, \vec{y}_{1:u-1}) \\
   b_{X, t, u} &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u:T_y} | z_{t, u}= X)  \\
-  f_{Y, t, u} &=& p(z_{t, u}=Y | \vec{x}_{1:t-1}, \vec{y}_{1:u}) \\
+  f_{Y, t, u} &=& p(z_{t, u}=Y , \vec{x}_{1:t-1}, \vec{y}_{1:u}) \\
   b_{Y, t, u} &=& p(\vec{x}_{t:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= Y) 
 \end{eqnarray}
 Now we can construct the procedure of DP. Let us write down the recurrence relation in the case where $z_{t,u} = M$. (it is hard to compute the denomitor so we should give up scaling? ... denomiter differ according to the hidden states)
 \begin{eqnarray}
-f_{M, t, u} &=& p(z_{t, u}=M | \vec{x}_{1:t}, \vec{y}_{1:u}) \nonumber \\
-            &=& \frac{p(z_{t, u}=M, x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \nonumber \\
-            &=& \frac{p(x_t, y_u |z_{t, u}=M) p(z_{t, u}=M| \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \nonumber\\
-            &=& \frac{p(x_t, y_u |z_{t, u}=M) p(z_{t, u}=M| \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \nonumber\\
-            &=& \frac{p(x_t, y_u |z_{t, u}=M)} {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} \times \nonumber \\
-&&\big[p(z_{t, u}=M| z_{t-1, u-1} = M)p(z_{t-1,u-1} = M | \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) + \nonumber \\
-&&\ p(z_{t, u}=M| z_{t-1, u} = X)p(z_{t-1,u} = X | \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) + \nonumber \\
-&&\ p(z_{t, u}=M| z_{t, u-1} = Y)p(z_{t,u-1} = Y | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})  \big]\nonumber \\
-&=& \frac{\psi_{M, t, u}}{d_{t,u}} [\beta_{M,M} f_{M,t-1,u-1} + \beta_{X,M} f_{t-1, u} + \beta_{Y,M} f_{Y, t, u-1}]\\
+f_{M, t, u} &=& p(z_{t, u}=M , \vec{x}_{1:t}, \vec{y}_{1:u}) \nonumber \\
+            &=& p(x_t, y_u |z_{t, u}=M) p(z_{t, u}=M, \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) \nonumber \\
+            &=& p(x_t, y_u |z_{t, u}=M) \times \nonumber \\
+&&\big[p(z_{t, u}=M| z_{t-1, u-1} = M) p(z_{t-1,u-1} = M, \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) + \nonumber \\
+&&\ p(z_{t, u}=M| z_{t-1, u} = X)p(z_{t-1,u} = X , \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) + \nonumber \\
+&&\ p(z_{t, u}=M| z_{t, u-1} = Y)p(z_{t,u-1} = Y , \vec{x}_{1:t-1}, \vec{y}_{1:u-1})  \big]\nonumber \\
+&=& \psi_{M, t, u} [\beta_{M,M} f_{M,t-1,u-1} + \beta_{X,M} f_{t-1, u} + \beta_{Y,M} f_{Y, t, u-1}]\\
+%%%%%
   b_{M, t, u}
             &=& p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} | z_{t, u}= M) \nonumber \\
             &=& \sum_{k \in \mathcal{S}}p(\vec{x}_{t+1:T_x}, \vec{y}_{u+1:T_y} z_{t+1, u+1} = k| z_{t, u}= M) \nonumber\\
@@ -88,13 +88,17 @@ f_{M, t, u} &=& p(z_{t, u}=M | \vec{x}_{1:t}, \vec{y}_{1:u}) \nonumber \\
             &=& p(x_{t+1}, y_{u+1}|z_{t+1, u+1}=M)p(\vec{x}_{t+2:T_x}, \vec{y}_{u+2:T_y}|z_{t+1, u+1}=M) p(z_{t+1, u+1} = M| z_{t, u}= M) +\nonumber \\ 
             && p(x_{t+1}|z_{t+1, u+1}=X)p(\vec{x}_{t+2:T_x}, \vec{y}_{u+1:T_y}|z_{t+1, u+1}=X) p(z_{t+1, u+1} = X| z_{t, u}= M) + \nonumber \\ 
             && p(y_{t+1}|z_{t+1, u+1}=Y)p(\vec{x}_{t+1:T_x}, \vec{y}_{u+2:T_y}|z_{t+1, u+1}=Y) p(z_{t+1, u+1} = Y| z_{t, u}= M) \nonumber \\ 
-            &=& \psi_{M, t+1, u+1} b_{M, t+1, u+1} \beta_{M,M} + \psi_{X, t+1, u} b_{X, t+1, u} \beta_{M,X} + \psi_{Y, t, u+1} b_{Y, t, u+1} \beta_{M,Y}
+            &=& \psi_{M, t+1, u+1} b_{M, t+1, u+1} \beta_{M,M} + \psi_{X, t+1, u+1} b_{X, t+1, u+1} \beta_{M,X} + \psi_{Y, t+1, u+1} b_{Y, t+1, u+1} \beta_{M,Y}
 \end{eqnarray}
-where $d_{t,u}$ is defined as:
+Similary, the recurrence relation of the forward and backward variables are defined as:
 \begin{eqnarray}
-  d_{t,u} = {p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1})} 
+  f_{X,t,u} &=& \psi_{X, t, u} [\beta_{M,X} f_{M,t-1,u-1} + \beta_{X,X} f_{t-1, u} + \beta_{Y,X} f_{Y, t, u-1}] \\
+  b_{X,t,u} &=& \psi_{M, t+1, u} b_{M, t+1, u} \beta_{X,M} + \psi_{X, t+1, u} b_{X, t+1, u} \beta_{X,X} + \psi_{Y, t+1, u} b_{Y, t+1, u} \beta_{X,Y} \\
+  f_{Y,t,u} &=& \psi_{Y, t, u} [\beta_{M,Y} f_{M,t-1,u-1} + \beta_{X,Y} f_{t-1, u} + \beta_{Y,Y} f_{Y, t, u-1}]\\
+  b_{Y,t,u} &=& \psi_{M, t, u+1} b_{M, t, u+1} \beta_{Y,M} + \psi_{X, t, u+1} b_{X, t, u+1} \beta_{Y,X} + \psi_{Y, t, u+1} b_{Y, t, u+1} \beta_{Y,Y}
 \end{eqnarray}
-(MEMO: forward... from index is different, output index is the same. backward... to index is the same, output index is different)The recurrence relation could be obtain in the same way for the hidden state $X$ and $Y$. Before showing them, let us introduce some supporting variables to make the notation simpler. Define $\delta_{x,k}$ and $\delta_{y,k}$ as:
+\footnote{MEMO: forward... from index is different, output index is the same. backward... to index is the same, output index is different)} 
+Let us introduce some supporting variables to make the notation simpler. Define $\delta_{x,k}$ and $\delta_{y,k}$ as:
 % \begin{eqnarray}
 %        \frac{p(x_t, y_u |z_{t, u}=M) \sum_{k \in \mathcal{S}}p(z_{t, u} |z_{t - \delta_{x,k}, u-\delta_{y,k}}=k)
 % p(z_{t - \delta_{x,k}, u-\delta_{y,k}}=k | \vec{x}_{1:t-\delta_{x,k}}, \vec{y}_{1:u-\delta_{y,k}}) }{p(x_t, y_u | \vec{x}_{1:t-1}, \vec{y}_{1:u-1}) }
@@ -107,9 +111,34 @@ where $d_{t,u}$ is defined as:
     (0,1) \quad \mbox{if} \quad k = Y
   \end{cases}
 \end{eqnarray}
-
-
+Using this formulation, we can rewrite the recurrence relation of forward and backward algorithm to be much simpler.
+\begin{eqnarray}
+  f_{k,t,u} &=& \psi_{k, t, u} \sum_{j \in \mathcal{S}}\beta_{j,k} f_{M,t - \delta_{x, j}, u-\delta_{y, j}} \\
+  b_{k,t,u} &=& \sum_{l \in \mathcal{S}} \psi_{l, t+\delta_{x, l}, u + \delta_{y,l}} b_{l, t+\delta_{x, l}, u + \delta_{y,l}}
+\end{eqnarray}
+Finally, the base cases are defined as:
+\begin{eqnarray}
+f_{k,1,1} &=& \phi_{k,1,1} \alpha_k \\
+f_{k,0,u} &=& f_{k,t,0} = 0 \quad \text{for all} \quad t,u \\
+b_{k,T_x,T_y} &=& 1 \\
+b_{k,T_x + 1,u} &=& f_{k,t,T_y+1} = 0 \quad \text{for all} \quad t,u
+\end{eqnarray}
 
 \subsection{EM}
-
+Parameters $\vec{\theta} = \{ \vec{\alpha}, \vec{\beta}, \vec{\phi}\}$ are optimized using EM. To begin with, we define the smoothed two-sliced marginal to be:
+\begin{eqnarray}
+\xi_{t, u, j, k} &=& p(z_{t-\delta_{x,j}, u-\delta_{y,j}} = j, z_{t,u} = k| \vec{x}_{1:T_x}, \vec{y}_{1:T_y}) \nonumber \\
+                 &=& \frac{1}{c} {f_{k,t-\delta_{x,j}, u-\delta_{y,j}} \beta_{j,k} \psi_{k,t,u} b_{k,t,u}}
+\end{eqnarray}
+Also, we define $\xi_{1, u, j, k}=\xi_{t, 1, j, k} = 0$ for all $t, u$ for notational simplicity.
+The auxiliary function is given by:
+\begin{eqnarray}
+  Q(\vec{\theta}, \vec{\theta}^{old})
+= \sum_{n=1}^N \left[ 
+  \sum_{k \in \mathcal{S}} \gamma^n_{k,1,1}\ln \alpha_k+ 
+  \sum_{t=1}^{T_x} \sum_{u=1}^{T_y} \sum_{j,k \in \mathcal{S}} \xi_{t,u,j,k}\ln \beta_{j,k} +
+  \sum_{t=1}^{T_x} \sum_{u=1}^{T_y} \sum_{k \in \mathcal{S}} \gamma_{k, t, u} \ln \psi_{k,t,u}
+ \right]
+\end{eqnarray}
+....
 
