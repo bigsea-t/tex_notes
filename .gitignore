@@ -142,3 +142,6 @@ pythontex-files-*/
 # WinEdt
 *.bak
 *.sav
+
+# latex generated files
+*/target/*
